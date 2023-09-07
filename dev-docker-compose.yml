@@ -1,0 +1,45 @@
+
+version: "3"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    restart: always
+    tty: true
+    env_file: ./client/.env
+
+    ports:
+      - 5173:5173
+      - 24678:24678
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+    networks:
+      - webappnetwork_cd
+  
+  db:
+    image: mariadb:10.8.2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: content_dashboard
+
+    command: "mysqld --init-file /data/application/init.sql"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./db_init/init.sql:/data/application/init.sql
+
+    tty: true
+    ports:
+      - 33306:3306
+    networks:
+      - webappnetwork_cd
+
+networks:
+  webappnetwork_cd:
+    driver: bridge
+
+volumes:
+  mariadb-data:

@@ -1,0 +1,66 @@
+
+version: "3"
+
+services:
+  content_dashboard_svelte:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.prod
+    restart: always
+    tty: true
+    env_file: ./client/.env
+
+    ports:
+      - 3070:3000
+    networks:
+      - webappnetwork_cd
+      - nginx_network
+  
+  content_dashboard_server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.prod
+    ports:
+      - 3111:3001
+    command: npm start
+    env_file: ./server/.env
+    volumes:
+      - ./server:/server
+    restart: always
+    tty: true
+    networks:
+      - webappnetwork_cd
+      - nginx_network
+    depends_on:
+      - db
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: content_dashboard
+
+    command: "mysqld --init-file /data/application/init.sql"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./db_init/init.sql:/data/application/init.sql
+
+    tty: true
+    ports:
+      - 33305:3306
+    networks:
+      - webappnetwork_cd
+
+
+volumes:
+  mariadb-data:
+
+
+networks:
+  nginx_network:
+    external: true
+  webappnetwork_cd:
+    driver: bridge
+
+
