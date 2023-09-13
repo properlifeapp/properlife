@@ -22,13 +22,13 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      # - "443:443"
+      - "443:443"
     volumes:
       - webrootfiles:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-      # - dhparam:/etc/ssl/certs
+      - dhparam:/etc/ssl/certs
     depends_on:
       - pocketbase
     networks:
@@ -43,8 +43,8 @@ services:
       - webrootfiles:/var/www/html
     depends_on:
       - webserver
-    command: certonly -v --webroot --webroot-path=/var/www/html --email properlifeapp@gmail.com --agree-tos --no-eff-email --staging -d properlife.app -d www.properlife.app
-    # command: certonly -v --webroot --webroot-path=/var/www/html --email properlifeapp@gmail.com --agree-tos --no-eff-email --force-renewal -d properlife.app -d www.properlife.app
+    # command: certonly -v --webroot --webroot-path=/var/www/html --email properlifeapp@gmail.com --agree-tos --no-eff-email --staging -d properlife.app -d www.properlife.app
+    command: certonly -v --webroot --webroot-path=/var/www/html --email properlifeapp@gmail.com --agree-tos --no-eff-email --force-renewal -d properlife.app -d www.properlife.app
 
 
   pocketbase:
@@ -70,13 +70,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /properlife/tech/appsMrcOrg/mainPageCode/
+      device: /root/properlife/nginx-conf/web/
       o: bind
-  # dhparam:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     device: /home/tech/appsMrcOrg/dhparam
-  #     o: bind
+  dhparam:
+    driver: local
+    driver_opts:
+      type: none
+      device: /root/properlife/dhparam
+      o: bind
 
 
