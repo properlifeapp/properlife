@@ -1,29 +1,27 @@
-from node:16-alpine
+# This is the base image from which we're building. 
+# "oven/bun" is a pre-made image that has Node.js and bun pre-installed.
+FROM oven/bun
 
-RUN mkdir -p /client/node_modules && chown -R node:node /client
+# Set the working directory in the Docker image to "/client".
+# All subsequent commands will run in this directory.
 WORKDIR /client
 
-# # Set the Node environment to development to ensure all packages are installed
-# ENV NODE_ENV development
-# ENV NODE_OPTIONS=--inspect=0.0.0.0:9229
+# Copy all files from your project into the Docker image.
+# The "." refers to the current directory (where your Dockerfile and application code is).
+COPY . .
 
-# Change our current working directory
-# WORKDIR /usr/src/app
+# Run the bun install command. 
+# This retrieves all the necessary dependencies for the project.
+RUN bun install
 
-# Copy over `package.json` and lock files to optimize the build process
-COPY ["package.json", "package-lock.json*", "./"]
-
-USER node
-
-# Install Node modules
-RUN npm ci
-
-# Copy over rest of the project files
-COPY --chown=node:node . .
-
-# Expose port 3000 for the SvelteKit app and 24678 for Vite's HMR
+# Expose port 3000 of the Docker container.
+# This is standard http port for a web server.
 EXPOSE 3000
+
+# Expose port 24678 of the Docker container.
+# This could be a port the application uses for something else, like live reloading.
 EXPOSE 24678
 
-# Run `yarn dev` and set the host to 0.0.0.0 so we can access the web app from outside
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+# The CMD directive defines the command to be executed when running a container from this image.
+# Here, it's running the application in development mode and making it listen on all interfaces (0.0.0.0).
+CMD ["bun", "--bun", "run", "dev", "--", "--host", "0.0.0.0"]

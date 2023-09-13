@@ -1,7 +1,9 @@
-//this allows the user variable to be accesed on all routes. 
-//Probably not neccesary, but shows how to inject variables into all pages
-export const load = async (event) => {
-    return {
-        user: event.locals.userData
-    };
-}; 
+import { serializeNonPOJOs } from '$lib/utils/helpers';
+
+export const load = ({ locals }) => {
+	if (locals.user && locals.user.profile) {
+		return {
+			profile: serializeNonPOJOs(locals.user.profile)
+		};
+	}
+};

@@ -1,5 +1,6 @@
 // import adapter from '@sveltejs/adapter-auto';
-import adapter from '@sveltejs/adapter-node';
+// import adapter from '@sveltejs/adapter-node';
+import adapter from 'svelte-adapter-bun';
 
 import preprocess from 'svelte-preprocess';
 

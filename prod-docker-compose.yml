@@ -2,65 +2,81 @@
 version: "3"
 
 services:
-  content_dashboard_svelte:
-    build:
-      context: ./client
-      dockerfile: Dockerfile.prod
-    restart: always
-    tty: true
-    env_file: ./client/.env
+  # content_dashboard_svelte:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile.prod
+  #   restart: always
+  #   tty: true
+  #   env_file: ./client/.env
 
+  #   ports:
+  #     - 3070:3000
+  #   networks:
+  #     - webappnetwork_cd
+  #     - nginx_network
+
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    restart: unless-stopped
     ports:
-      - 3070:3000
-    networks:
-      - webappnetwork_cd
-      - nginx_network
-  
-  content_dashboard_server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile.prod
-    ports:
-      - 3111:3001
-    command: npm start
-    env_file: ./server/.env
+      - "80:80"
+      # - "443:443"
     volumes:
-      - ./server:/server
-    restart: always
-    tty: true
-    networks:
-      - webappnetwork_cd
-      - nginx_network
+      - webrootfiles:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      # - dhparam:/etc/ssl/certs
     depends_on:
-      - db
-
-  db:
-    image: mariadb
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: content_dashboard
-
-    command: "mysqld --init-file /data/application/init.sql"
-    volumes:
-      - mariadb-data:/var/lib/mysql
-      - ./db_init/init.sql:/data/application/init.sql
-
-    tty: true
-    ports:
-      - 33305:3306
+      - pocketbase
     networks:
-      - webappnetwork_cd
+      - properlife_network
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - webrootfiles:/var/www/html
+    depends_on:
+      - webserver
+    command: certonly -v --webroot --webroot-path=/var/www/html --email properlifeapp@gmail.com --agree-tos --no-eff-email --staging -d properlife.app -d www.properlife.app
+    # command: certonly -v --webroot --webroot-path=/var/www/html --email properlifeapp@gmail.com --agree-tos --no-eff-email --force-renewal -d properlife.app -d www.properlife.app
 
 
-volumes:
-  mariadb-data:
-
+  pocketbase:
+    build:
+      context: ./pocketbase
+      dockerfile: Dockerfile
+    ports:
+      - 8090:8090
+    volumes:
+      - ./pocketbase/pb_migrations:/pb/pb_migrations
+      - ./pocketbase/pb_hooks:/pb/pb_hooks
+    networks:
+      - properlife_network
 
 networks:
-  nginx_network:
-    external: true
-  webappnetwork_cd:
+  properlife_network:
     driver: bridge
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  webrootfiles:
+    driver: local
+    driver_opts:
+      type: none
+      device: /properlife/tech/appsMrcOrg/mainPageCode/
+      o: bind
+  # dhparam:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device: /home/tech/appsMrcOrg/dhparam
+  #     o: bind
 
 

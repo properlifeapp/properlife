@@ -17,29 +17,21 @@ services:
       - ./client:/client
       - /client/node_modules
     networks:
-      - webappnetwork_cd
-  
-  db:
-    image: mariadb:10.8.2
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: content_dashboard
-
-    command: "mysqld --init-file /data/application/init.sql"
-    volumes:
-      - mariadb-data:/var/lib/mysql
-      - ./db_init/init.sql:/data/application/init.sql
-
-    tty: true
+      - properlife_network
+      
+  pocketbase:
+    build:
+      context: ./pocketbase
+      dockerfile: Dockerfile
     ports:
-      - 33306:3306
+      - 8090:8090
+      # - 8090:8090
+    volumes:
+      - ./pocketbase/pb_migrations:/pb/pb_migrations
+      - ./pocketbase/pb_hooks:/pb/pb_hooks
     networks:
-      - webappnetwork_cd
+      - properlife_network
 
 networks:
-  webappnetwork_cd:
+  properlife_network:
     driver: bridge
-
-volumes:
-  mariadb-data:
