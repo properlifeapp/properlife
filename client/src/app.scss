@@ -1,7 +1,17 @@
 // @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital;wght@0;400;0;700;1;400;1;700&display=swap');
+@use 'sass:color';
+
+
+
 
 :root {
+    --font-family: "Montserrat", sans-serif;
     font-family: "Montserrat", sans-serif;
+
+    --mdc-typography-font-family: "Montserrat", sans-serif;
+
+    --btn-primary-gradient: linear-gradient(270deg, #168D20 0%, #0E5814 100%);
+    --btn-primary-gradient-reverse: linear-gradient(270deg, #0E5814 0%, #168D20 100%);
 
    /* Primary */
    --green-050: #e3f9e5;
@@ -60,6 +70,8 @@
    --yellow-700: #a27c1a;
    --yellow-800: #7c5e10;
    --yellow-900: #513c06;
+
+
    //logic for showing the correct theme button in the nav
    &.dark {
        /* Primary */
@@ -139,7 +151,16 @@ img {
 
 body {
     background-color: var(--grey-050);
+    min-height: 100vh;
 }
+
+a {
+    color: #40b3ff;
+  }
+  a:visited {
+    color: color.scale(#40b3ff, $lightness: -35%);
+  }
+  
 
 // .container {
 //     max-width: 1200px;

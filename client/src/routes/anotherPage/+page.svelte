@@ -15,11 +15,11 @@
 <form action="/logout" method="post">
 <button>logout</button>
 </form>
-<a href="/anotherPage">anotherPage</a>
+<a href="/">home</a>
 {:else}
 <a href="/login">Login</a>
 <a href="/register">Register</a>
-<a href="/anotherPage">anotherPage</a>
+<a href="/">home</a>
 {/if}
 
 <style lang="scss">

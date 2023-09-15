@@ -1,9 +1,22 @@
-import { serializeNonPOJOs } from '$lib/utils/helpers';
-
 export const load = ({ locals }) => {
-	if (locals.user && locals.user.profile) {
+	// console.log('load locals', locals)
+	if (locals.user) {
 		return {
-			profile: serializeNonPOJOs(locals.user.profile)
+			user: locals.user
 		};
 	}
+
+	return {
+		user: undefined
+	};
 };
+
+// import { serializeNonPOJOs } from '$lib/utils/helpers';
+
+// export const load = ({ locals }) => {
+// 	if (locals.user && locals.user.profile) {
+// 		return {
+// 			profile: serializeNonPOJOs(locals.user.profile)
+// 		};
+// 	}
+// };

@@ -16,22 +16,22 @@ services:
     volumes:
       - ./client:/client
       - /client/node_modules
-    networks:
-      - properlife_network
+    # networks:
+    #   - properlife_network
       
-  pocketbase:
-    build:
-      context: ./pocketbase
-      dockerfile: Dockerfile
-    ports:
-      - 8090:8090
-      # - 8090:8090
-    volumes:
-      - ./pocketbase/pb_migrations:/pb/pb_migrations
-      - ./pocketbase/pb_hooks:/pb/pb_hooks
-    networks:
-      - properlife_network
+  # pocketbase:
+  #   build:
+  #     context: ./pocketbase
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 8090:8090
+  #     # - 8090:8090
+  #   volumes:
+  #     - ./pocketbase/pb_migrations:/pb/pb_migrations
+  #     - ./pocketbase/pb_hooks:/pb/pb_hooks
+  #   networks:
+  #     - properlife_network
 
-networks:
-  properlife_network:
-    driver: bridge
+# networks:
+#   properlife_network:
+#     driver: bridge
