@@ -3,7 +3,7 @@
     <script>
         export let data
 
-        console.log({'anotherpage svelte data': data})
+        console.log({'page svelte data': data})
         $: user = data?.user
     </script>
     

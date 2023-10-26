@@ -58,7 +58,7 @@ export const actions = {
 			msg = `'Welcome back, ${username}!'`;
 		}
 
-		throw redirect(303, `/?${toastByUrl('success', msg)}`);
+		throw redirect(303, `/user?${toastByUrl('success', msg)}`);
 	},
 	google: async ({ request, locals }) => {
 		console.log('google');

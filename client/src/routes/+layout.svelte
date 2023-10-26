@@ -6,7 +6,7 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	// Exported variable 'data' which can be passed as a prop to this component
-	export let data;
+	// export const data;
 
 	// Importing the 'page' store to access current page's properties
 	import { page } from '$app/stores';
@@ -53,7 +53,7 @@
 	}
 
 	// Logging the 'data' prop to the console
-	console.log(data);
+	// console.log(data);
 </script>
 
 <Toaster />

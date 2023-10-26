@@ -1,5 +1,5 @@
-import { redirect } from '@sveltejs/kit';
-import { PUBLIC_DOMAIN_CLIENT } from '$env/static/public'
+// import { redirect } from '@sveltejs/kit';
+// import { PUBLIC_DOMAIN_CLIENT } from '$env/static/public'
 
 //basically if we don't have the userData from `+layout.server.js`
 //we redirect the user to the signin page

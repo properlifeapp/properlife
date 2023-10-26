@@ -1,16 +1,36 @@
-@use 'sass:color';
+@use "sass:color";
 
-@use '@material/theme/color-palette';
+@use "@material/theme/color-palette";
 
 // Svelte Colors!
-@use '@material/theme/index' as theme with (
+@use "@material/theme/index" as theme with (
   $primary: #3f9142,
   $secondary: #7e7e7e,
   $surface: #f7f7f7,
   $on-surface: #222222,
   $background: #f7f7f7,
-  $error: #a61b1b,
+  $error: #a61b1b
 );
+@use "@material/radio/mixins" as radio;
+
+.my-colored-radio {
+  @include radio.checked-stroke-color(var(--green-600));
+  @include radio.ink-color(var(--green-600));
+  @include radio.disabled-checked-stroke-color(var(--green-900));
+  @include radio.disabled-ink-color(var(--green-900));
+  @include radio.focus-indicator-color(var(--green-100));
+}
+
+.my-fully-colored-radio {
+  @include radio.unchecked-stroke-color(var(--green-600));
+  @include radio.checked-stroke-color(var(--green-600));
+  @include radio.ink-color(var(--green-600));
+  @include radio.disabled-unchecked-stroke-color(var(--green-900));
+  @include radio.disabled-checked-stroke-color(var(--green-900));
+  @include radio.disabled-ink-color(var(--green-900));
+  @include radio.focus-indicator-color(var(--green-100));
+}
+
 // html,
 // body {
 //   background-color: theme.$surface;
